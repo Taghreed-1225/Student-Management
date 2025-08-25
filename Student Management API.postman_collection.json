@@ -1,0 +1,355 @@
+{
+	"info": {
+		"_postman_id": "e8780d55-b022-4b20-b2f6-01b4d3494f4b",
+		"name": "Student Management API",
+		"description": "Complete API collection for Student Management System with JWT Authentication",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "40721589",
+		"_collection_link": "https://mohammad-2269.postman.co/workspace/student~7190d457-ecd5-4ae8-8f2e-c9c6f540649c/collection/40721589-e8780d55-b022-4b20-b2f6-01b4d3494f4b?action=share&source=collection_link&creator=40721589"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "1. Register Admin User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"newadmin\",\n    \"password\": \"password123\",\n    \"roles\": [\"ADMIN\"]\n}"
+						},
+						"url": "{{base_url}}/api/auth/signup"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Register Regular User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"newuser\",\n    \"password\": \"password123\",\n    \"roles\": [\"USER\"]\n}"
+						},
+						"url": "{{base_url}}/api/auth/signup"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Login as Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('jwt_token', response.token);",
+									"    console.log('JWT Token saved:', response.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+						},
+						"url": "{{base_url}}/api/auth/signin"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Login as User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('jwt_token', response.token);",
+									"    console.log('JWT Token saved:', response.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"user\",\n    \"password\": \"user123\"\n}"
+						},
+						"url": "{{base_url}}/api/auth/signin"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Student Management",
+			"item": [
+				{
+					"name": "1. Get All Students (USER/ADMIN)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": "{{base_url}}/api/students"
+					},
+					"response": []
+				},
+				{
+					"name": "2. Get Student by ID (USER/ADMIN)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": "{{base_url}}/api/students/1"
+					},
+					"response": []
+				},
+				{
+					"name": "3. Create Student (ADMIN only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"علي\",\n    \"lastName\": \"محمود\",\n    \"email\": \"ali.mahmoud@email.com\",\n    \"dateOfBirth\": \"2000-05-15\"\n}"
+						},
+						"url": "{{base_url}}/api/students"
+					},
+					"response": []
+				},
+				{
+					"name": "4. Update Student (ADMIN only)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"علي محدث\",\n    \"lastName\": \"محمود محدث\",\n    \"email\": \"ali.updated@email.com\",\n    \"dateOfBirth\": \"2000-06-20\"\n}"
+						},
+						"url": "{{base_url}}/api/students/1"
+					},
+					"response": []
+				},
+				{
+					"name": "5. Delete Student (ADMIN only)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": "{{base_url}}/api/students/8"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Validation Tests",
+			"item": [
+				{
+					"name": "Create Student - Invalid Email",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Test\",\n    \"lastName\": \"User\",\n    \"email\": \"invalid-email\",\n    \"dateOfBirth\": \"2000-05-15\"\n}"
+						},
+						"url": "{{base_url}}/api/students"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Student - Missing Fields",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"\",\n    \"email\": \"test@email.com\"\n}"
+						},
+						"url": "{{base_url}}/api/students"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Non-Existing Student",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"url": "{{base_url}}/api/students/999"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authorization Tests",
+			"item": [
+				{
+					"name": "Access Without Token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/api/students"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Student as USER (Should Fail)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"// First login as USER",
+									"pm.sendRequest({",
+									"    url: pm.collectionVariables.get('base_url') + '/api/auth/signin',",
+									"    method: 'POST',",
+									"    header: {",
+									"        'Content-Type': 'application/json'",
+									"    },",
+									"    body: {",
+									"        mode: 'raw',",
+									"        raw: JSON.stringify({",
+									"            username: 'user',",
+									"            password: 'user123'",
+									"        })",
+									"    }",
+									"}, (err, res) => {",
+									"    if (!err && res.code === 200) {",
+									"        const response = res.json();",
+									"        pm.collectionVariables.set('jwt_token', response.token);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{jwt_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstName\": \"Should\",\n    \"lastName\": \"Fail\",\n    \"email\": \"should.fail@email.com\",\n    \"dateOfBirth\": \"2000-01-01\"\n}"
+						},
+						"url": "{{base_url}}/api/students"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{jwt_token}}"
+		}
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080"
+		},
+		{
+			"key": "jwt_token",
+			"value": ""
+		}
+	]
+}
