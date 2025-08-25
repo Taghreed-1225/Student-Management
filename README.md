@@ -38,3 +38,12 @@ A RESTful API built with Spring Boot for managing student records with JWT-based
 ```bash
 git clone https://github.com/yourusername/student-management-api.git
 cd student-management-api
+
+Build the project:
+
+bashmvn clean install
+
+Run the application:
+
+bashmvn spring-boot:run
+The application will start on http://localhost:8080
